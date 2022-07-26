@@ -1,36 +1,36 @@
-# import sys
+import sys
+import os
 import json
 from tqdm import tqdm
-# sys.path.append("..")
+
+sys.path.insert(
+    0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "pycorrector"))
+
 from pycorrector.macbert.macbert_corrector import MacBertCorrector
 
 m = MacBertCorrector("./macbert4csc")
 path = "./reality_test.json"
 # 读取文件数据
 with open(path, "r") as f:
-    row_data = json.load(f)
-
-# 读取每一条json数据
-correct_sum = 0
-for d in tqdm(row_data):
-    line = d['original_text']
-    correct_sent, err = m.macbert_correct(line)
-    d['predict_text'] = correct_sent
+    raw_data = json.load(f)
 
 # 读取每一条json数据
 pre_acc = 0
-for dd in tqdm(row_data):
-    correct_sum += 1
+for d in tqdm(raw_data):
+    line = d['original_text']
+    predict_text, err = m.macbert_correct(line)
+
     # print("正在打印第{}条数据".format(correct_sum))
-    if dd['predict_text'] == dd['correct_text']:
+    if predict_text == d['correct_text']:
         pre_acc += 1
     else:
-        print("predict: " + dd["predict_text"])
-        print("correct: " + dd["correct_text"])
+        print("original: " + d['original_text'])
+        print("predict: " + predict_text)
+        print("correct: " + d["correct_text"])
         print("==================================================")
 
 # 0.9479507313920927
-sentence_acc = pre_acc / correct_sum
+sentence_acc = pre_acc / len(raw_data)
 with open('reality_test.txt', 'w') as f:
     f.write(str(sentence_acc))
 print(sentence_acc)

@@ -111,7 +111,6 @@ def rep_tokens(text):
                 pos_.append(k)
             res.append((pos_, "".join(chars_lists)))
 
-
     # pos_,v = res[-1]
 
     # for p in pos_:
