@@ -1,6 +1,7 @@
 import sys
+import os
 
-sys.path.append("..")
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "pycorrector"))
 from pycorrector.macbert.macbert_corrector import MacBertCorrector
 
 if __name__ == '__main__':
@@ -10,7 +11,9 @@ if __name__ == '__main__':
         "导致预算收入编制不完争", "保正各项负债在规定期限内完成", "签订工程造价协意书",
         "研究元除在管理费中列支业务招待费16000元外", "研究远除在管理费中列支业务招待费16000元外",
         "致使成际公司对中铁十七具公成指挥部申报的机场站工程第二期已完成工程量合渭河特大桥工程第二", "积极完善了相官内控制度",
-        "基础教与数字成果评审", "部分固定资产实物与卡片信息部符", "不符合《中华人民共和国合童法》第八条依法成立的合同"
+        "基础教与数字成果评审", "部分固定资产实物与卡片信息部符", "不符合《中华人民共和国合童法》第八条依法成立的合同",
+        "讲台上放着一只漂亮的刚笔。", "他总是用自己的行动影响大家，给我留下了深刻的音象。",
+        "我昨天打电话给了你妈妈，她说你感冒住院了，我听了以后真得很担心。", "赛翁失马，焉知非福"
     ]
 
     m = MacBertCorrector("./macbert4csc")

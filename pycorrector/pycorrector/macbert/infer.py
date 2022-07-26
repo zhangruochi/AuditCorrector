@@ -88,7 +88,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="infer")
     parser.add_argument(
         "--ckpt_path",
-        default="output/macbert4csc/epoch=01-val_loss=0.03.ckpt",
+        default="output/macbert4csc/epoch=04-val_loss=0.03.ckpt",
         help="path to config file",
         type=str)
     parser.add_argument("--vocab_path", default="output/macbert4csc/vocab.txt", help="path to config file", type=str)
@@ -101,7 +101,11 @@ if __name__ == "__main__":
         "导致预算收入编制不完争", "保正各项负债在规定期限内完成", "签订工程造价协意书",
         "研究元除在管理费中列支业务招待费16000元外", "研究远除在管理费中列支业务招待费16000元外",
         "致使成际公司对中铁十七具公成指挥部申报的机场站工程第二期已完成工程量合渭河特大桥工程第二", "积极完善了相官内控制度",
-        "基础教与数字成果评审", "部分固定资产实物与卡片信息部符", "不符合《中华人民共和国合童法》第八条依法成立的合同"
+        "基础教与数字成果评审", "部分固定资产实物与卡片信息部符", "不符合《中华人民共和国合童法》第八条依法成立的合同",
+        "讲台上放着一只漂亮的刚笔。",
+        "他总是用自己的行动影响大家，给我留下了深刻的音象。",
+        "我昨天打电话给了你妈妈，她说你感冒住院了，我听了以后真得很担心。",
+        "赛翁失马，焉知非福"
     ]
     outputs = m.predict(inputs)
     for a, b in zip(inputs, outputs):

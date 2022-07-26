@@ -20,7 +20,8 @@ class DataCollator:
         encoded_texts = [self.tokenizer.tokenize(t) for t in ori_texts]
         max_len = max([len(t) for t in encoded_texts]) + 2
         det_labels = torch.zeros(len(ori_texts), max_len).long()
-        for i, (encoded_text, wrong_ids) in enumerate(zip(encoded_texts, wrong_idss)):
+        for i, (encoded_text,
+                wrong_ids) in enumerate(zip(encoded_texts, wrong_idss)):
             for idx in wrong_ids:
                 margins = []
                 for word in encoded_text[:idx]:
@@ -40,35 +41,57 @@ class DataCollator:
 
 
 class CscDataset(Dataset):
-    def __init__(self, file_path):
+    def __init__(self, file_path, max_length=168):
         self.data = json.load(open(file_path, 'r', encoding='utf-8'))
+        self.max_length = max_length
 
     def __len__(self):
         return len(self.data)
 
     def __getitem__(self, index):
-        return self.data[index]['original_text'], self.data[index]['correct_text'], self.data[index]['wrong_ids']
+        original_text, correct_text, wrong_ids = self.data[index][
+            'original_text'], self.data[index]['correct_text'], self.data[
+                index]['wrong_ids']
+
+        original_text = original_text[:self.max_length]
+        correct_text = correct_text[:self.max_length]
+        wrong_ids = [_ for _ in wrong_ids if _ < self.max_length]
+
+        # print(original_text )
+        # print(correct_text)
+        # print(wrong_ids)
+        # exit()
+
+        return original_text, correct_text, wrong_ids
 
 
-def make_loaders(collate_fn, train_path='', valid_path='', test_path='',
-                 batch_size=32, num_workers=4):
+def make_loaders(collate_fn,
+                 max_length,
+                 train_path='',
+                 valid_path='',
+                 test_path='',
+                 batch_size=32,
+                 num_workers=4):
     train_loader = None
     if train_path and os.path.exists(train_path):
-        train_loader = DataLoader(CscDataset(train_path),
+        train_loader = DataLoader(CscDataset(train_path,
+                                             max_length=max_length),
                                   batch_size=batch_size,
                                   shuffle=False,
                                   num_workers=num_workers,
                                   collate_fn=collate_fn)
     valid_loader = None
     if valid_path and os.path.exists(valid_path):
-        valid_loader = DataLoader(CscDataset(valid_path),
+        valid_loader = DataLoader(CscDataset(valid_path,
+                                             max_length=max_length),
                                   batch_size=batch_size,
                                   num_workers=num_workers,
                                   collate_fn=collate_fn)
     test_loader = None
     if test_path and os.path.exists(test_path):
-        test_loader = DataLoader(CscDataset(test_path),
+        test_loader = DataLoader(CscDataset(test_path, max_length=max_length),
                                  batch_size=batch_size,
                                  num_workers=num_workers,
                                  collate_fn=collate_fn)
+
     return train_loader, valid_loader, test_loader

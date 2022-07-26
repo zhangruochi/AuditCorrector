@@ -2,8 +2,8 @@ import json
 
 
 def add_dev_set():
-    path_dev_csc = "/Users/admin/Desktop/AuditCorrector/csc_sample/dev.json"
-    path_dev_mine = "/Users/admin/Desktop/AuditCorrector/dev.json"
+    path_dev_csc = "./csc_sample/dev.json"
+    path_dev_mine = "./dev.json"
     json_data_dev = []
     with open(path_dev_csc, "r") as file:
         csc_data = json.load(file)
@@ -19,8 +19,8 @@ def add_dev_set():
 
 
 def add_test_set():
-    path_test_csc = "/Users/admin/Desktop/AuditCorrector/csc_sample/test.json"
-    path_test_mine = "/Users/admin/Desktop/AuditCorrector/test.json"
+    path_test_csc = "./csc_sample/test.json"
+    path_test_mine = "./test.json"
     json_data_test = []
     with open(path_test_csc, "r") as file:
         csc_data = json.load(file)
@@ -36,8 +36,8 @@ def add_test_set():
 
 
 def add_train_set():
-    path_train_csc = "/Users/admin/Desktop/AuditCorrector/csc_sample/train.json"
-    path_train_mine = "/Users/admin/Desktop/AuditCorrector/train.json"
+    path_train_csc = "./csc_sample/train.json"
+    path_train_mine = "./train.json"
     json_data_train = []
     with open(path_train_csc, "r") as file:
         csc_data = json.load(file)

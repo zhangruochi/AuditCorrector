@@ -22,7 +22,7 @@ from pycorrector.macbert.defaults import _C as cfg
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
-
+MAX_LENGTH = 168
 
 def args_parse(config_file=''):
     parser = argparse.ArgumentParser(description="csc")
@@ -62,9 +62,24 @@ def main():
     tokenizer = BertTokenizer.from_pretrained(cfg.MODEL.BERT_CKPT)
     collator = DataCollator(tokenizer=tokenizer)
     # 加载数据
-    train_loader, valid_loader, test_loader = make_loaders(collator, train_path=cfg.DATASETS.TRAIN,
+    train_loader, valid_loader, test_loader = make_loaders(collator, MAX_LENGTH, train_path=cfg.DATASETS.TRAIN,
                                                            valid_path=cfg.DATASETS.VALID, test_path=cfg.DATASETS.TEST,
                                                            batch_size=cfg.SOLVER.BATCH_SIZE, num_workers=4)
+
+    # for i, batch in enumerate(train_loader):
+    #     ori_texts, cor_texts, det_labels = batch
+
+    #     text_labels = tokenizer(cor_texts, padding=True,
+    #                             return_tensors='pt')['input_ids']
+    #     encoded_text = tokenizer(ori_texts, padding=True,
+    #                              return_tensors='pt')['input_ids']
+
+    #     if encoded_text.shape[-1] > 100:
+    #         print(i)
+    #         print(encoded_text.shape)
+    #         print(text_labels.shape)
+
+
     if cfg.MODEL.NAME == 'softmaskedbert4csc':
         model = SoftMaskedBert4Csc(cfg, tokenizer)
     elif cfg.MODEL.NAME == 'macbert4csc':
